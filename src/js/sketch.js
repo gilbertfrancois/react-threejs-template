@@ -6,6 +6,7 @@ import vertex from "../shader/vertex.glsl";
 
 export class Sketch {
     constructor(options) {
+        this.sliderValue = 0;
         this.scene = new THREE.Scene();
         this.gui = new GUI();
         this.container = options.dom;
@@ -36,7 +37,7 @@ export class Sketch {
         );
         this.time = 0;
 
-        this.isPlaying = true;
+        this.isPlaying = false;
 
         this.addObjects();
         this.resize();
@@ -95,8 +96,8 @@ export class Sketch {
 
     play() {
         if (!this.isPlaying) {
-            this.render();
             this.isPlaying = true;
+            this.render();
         }
     }
 
@@ -107,5 +108,9 @@ export class Sketch {
         this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
+    }
+
+    setSliderValue(value) {
+        this.sliderValue = value;
     }
 }

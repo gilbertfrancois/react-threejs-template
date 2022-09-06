@@ -3,15 +3,15 @@ import { Sketch } from "./sketch";
 
 export function App() {
     const [sliderValue, setSliderValue] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPaused, setIsPaused] = useState(true);
     return (
         <>
             <div className="controls">
                 <button
                     type="button"
-                    onClick={() => setIsPlaying((oldVal) => !oldVal)}
+                    onClick={() => setIsPaused((oldVal) => !oldVal)}
                 >
-                    {isPlaying ? "⏸️" : "▶️"}
+                    {isPaused ? "▶️" : "⏸️"}
                 </button>
                 <input
                     type="range"
@@ -23,14 +23,22 @@ export function App() {
                 />
             </div>
             <div className="sketches">
-                <ThreeScene paused={!isPlaying} className="border-blue" />
-                <ThreeScene paused={!isPlaying} className="border-green" />
+                <ThreeScene
+                    paused={isPaused}
+                    sliderValue={sliderValue}
+                    className="border-blue"
+                />
+                <ThreeScene
+                    paused={isPaused}
+                    sliderValue={sliderValue}
+                    className="border-green"
+                />
             </div>
         </>
     );
 }
 
-function ThreeScene({ isPlaying, className }) {
+function ThreeScene({ paused, sliderValue, className }) {
     const [scene, setScene] = useState();
 
     const nodeRef = useCallback((node) => {
@@ -43,12 +51,19 @@ function ThreeScene({ isPlaying, className }) {
         if (!scene) {
             return;
         }
-        if (isPlaying) {
+        if (paused) {
             scene.stop();
         } else {
             scene.play();
         }
-    }, [isPlaying, scene]);
+    }, [paused, scene]);
+
+    useEffect(() => {
+        if (!scene) {
+            return;
+        }
+        scene.setSliderValue(sliderValue);
+    }, [sliderValue, scene]);
 
     return <div ref={nodeRef} className={className} />;
 }
