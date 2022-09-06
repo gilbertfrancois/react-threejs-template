@@ -1,14 +1,14 @@
 import * as THREE from "three";
-import fragment from "../shader/fragment.glsl";
-import vertex from "../shader/vertex.glsl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import fragment from "../shader/fragment.glsl";
+import vertex from "../shader/vertex.glsl";
 
-export default class Sketch {
+export class Sketch {
     constructor(options) {
+        this.sliderValue = 0;
         this.scene = new THREE.Scene();
         this.gui = new GUI();
-
         this.container = options.dom;
         this.width = this.container.offsetWidth;
         this.height = this.container.offsetHeight;
@@ -37,7 +37,7 @@ export default class Sketch {
         );
         this.time = 0;
 
-        this.isPlaying = true;
+        this.isPlaying = false;
 
         this.addObjects();
         this.resize();
@@ -96,21 +96,21 @@ export default class Sketch {
 
     play() {
         if (!this.isPlaying) {
-            this.render();
             this.isPlaying = true;
+            this.render();
         }
     }
 
     render() {
         if (!this.isPlaying) return;
         this.time += 0.05;
-        this.gui
+        this.gui;
         this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
     }
-}
 
-new Sketch({
-    dom: document.getElementById("sketch"),
-});
+    setSliderValue(value) {
+        this.sliderValue = value;
+    }
+}

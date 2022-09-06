@@ -7,7 +7,23 @@ body {
     overflow: hidden;
 }
 
-#sketch {
-    width: 100wv;
-    height: 100vh;
+.controls {
+    margin: 12px 0 12px 0;
+    display: flex;
+    gap: 8px;
+}
+
+.sketches {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    height: 90vh;
+}
+
+.border-blue {
+    border: 2px solid blue;
+}
+
+.border-green {
+    border: 2px solid teal;
 }
