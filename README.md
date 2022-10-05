@@ -7,9 +7,11 @@ _Gilbert François Duivesteijn_
 
 This template is a minimum starting point for a React - Three.js web project. 
 Some features of the template:
-- Shows how to pass React state variables to the THREE.js sketch
+- Shows how to pass React state variables to the THREE.js sketch.
 - Has a constructor and destructor of the WebGL renderer, avoiding potential
 memory leaks.
+- Proper window resize handling.
+- Boiler plate code for a GUI panel for testing.
 
 The THREE.js sample sketch is inspired from the great work of _Yuri Artiukh_.
 
