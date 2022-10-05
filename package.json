@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "React - Three.js template",
     "scripts": {
-        "dev": "parcel src/index.html",
+        "dev": "npx parcel --host 0.0.0.0 --port 1234 src/index.html",
         "prod": "parcel build src/index.html",
         "clean": "rm -rf dist; rm -rf node_modules; rm -rf .parcel-cache; rm package-lock.json",
         "cp": "cp -r ./assets ./dist/",
@@ -14,12 +14,18 @@
     "dependencies": {
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "three": "^0.144.0"
+        "three": "^0.145.0"
     },
     "devDependencies": {
         "@parcel/transformer-glsl": "^2.7.0",
         "parcel": "^2.7.0",
         "prettier": "^2.7.1",
         "process": "^0.11.10"
-    }
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
 }
