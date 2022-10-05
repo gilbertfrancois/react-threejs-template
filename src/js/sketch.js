@@ -6,10 +6,12 @@ import vertex from "../shader/vertex.glsl";
 
 export class Sketch {
     constructor(options) {
+        this.destroyed = false;
         this.sliderValue = 0;
         this.scene = new THREE.Scene();
         this.gui = new GUI();
         this.container = options.dom;
+        console.log(this.container);
         this.width = this.container.offsetWidth;
         this.height = this.container.offsetHeight;
         this.renderer = new THREE.WebGLRenderer();
@@ -35,34 +37,37 @@ export class Sketch {
             this.camera,
             this.renderer.domElement,
         );
-        this.time = 0;
 
         this.isPlaying = false;
 
         this.addObjects();
         this.resize();
         this.render();
+        this.resize_bound = this.resize.bind(this);
         this.setupResize();
         this.settings();
     }
 
     settings() {
-        this.settings = {
-            progress: 0,
-        };
-        this.gui.add(this.settings, "progress", 0, 1, 0.01);
+        // Enable the GUI element if you want to change values quickly during
+        // development and testing.
+        //
+        // this.settings = {
+        //     progress: 0,
+        // };
+        // this.gui.add(this.settings, "progress", 0, 1, 0.01);
     }
 
     setupResize() {
-        window.addEventListener("resize", this.resize.bind(this));
+        window.addEventListener("resize", this.resize_bound);
     }
 
     resize() {
         this.width = this.container.offsetWidth;
         this.height = this.container.offsetHeight;
-        this.renderer.setSize(this.width, this.height);
         this.camera.aspect = this.width / this.height;
         this.camera.updateProjectionMatrix();
+        this.renderer.setSize(this.width, this.height);
     }
 
     addObjects() {
@@ -103,8 +108,12 @@ export class Sketch {
 
     render() {
         if (!this.isPlaying) return;
+        // Enable the GUI element if you want to change values quickly during
+        // development and testing.
+        //
+        // this.gui;
         this.time += 0.05;
-        this.gui;
+        this.plane.rotation.y += this.sliderValue / 1000;
         this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
@@ -112,5 +121,12 @@ export class Sketch {
 
     setSliderValue(value) {
         this.sliderValue = value;
+    }
+
+    destroy() {
+        this.renderer.dispose();
+        this.camera = undefined;
+        window.removeEventListener("resize", this.resize_bound);
+        this.destroyed = true;
     }
 }
