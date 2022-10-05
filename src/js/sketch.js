@@ -9,7 +9,6 @@ export class Sketch {
         this.destroyed = false;
         this.sliderValue = 0;
         this.scene = new THREE.Scene();
-        this.gui = new GUI();
         this.container = options.dom;
         console.log(this.container);
         this.width = this.container.offsetWidth;
@@ -19,20 +18,23 @@ export class Sketch {
         this.renderer.setSize(this.width, this.height);
         this.renderer.setClearColor(0xeeeeee, 1);
         this.renderer.outputEncoding = THREE.sRGBEncoding;
+        this.test_settings = undefined;
 
         this.container.appendChild(this.renderer.domElement);
 
+        // Setup Camera
         this.camera = new THREE.PerspectiveCamera(
             70,
             window.innerWidth / window.innerHeight,
             0.001,
             1000,
         );
-
-        // var frustumSize = 10;
-        // var aspect = window.innerWidth / window.innerHeight;
+        // const frustumSize = 10;
+        // const aspect = window.innerWidth / window.innerHeight;
         // this.camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, -1000, 1000 );
         this.camera.position.set(0, 0, 2);
+
+        // Setup controls
         this.controls = new OrbitControls(
             this.camera,
             this.renderer.domElement,
@@ -45,18 +47,20 @@ export class Sketch {
         this.render();
         this.resize_bound = this.resize.bind(this);
         this.setupResize();
-        this.settings();
-    }
 
-    settings() {
         // Enable the GUI element if you want to change values quickly during
         // development and testing.
         //
-        // this.settings = {
-        //     progress: 0,
-        // };
-        // this.gui.add(this.settings, "progress", 0, 1, 0.01);
+        // this.gui = new GUI();
+        // this.setupTestSettings();
     }
+
+    // setupTestSettings() {
+    //     this.test_settings = {
+    //         val1: 0,
+    //     };
+    //     this.gui.add(this.test_settings, "val1", 0, 1, 0.01);
+    // }
 
     setupResize() {
         window.addEventListener("resize", this.resize_bound);
@@ -108,13 +112,7 @@ export class Sketch {
 
     render() {
         if (!this.isPlaying) return;
-        // Enable the GUI element if you want to change values quickly during
-        // development and testing.
-        //
-        // this.gui;
-        this.time += 0.05;
         this.plane.rotation.y += this.sliderValue / 1000;
-        this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
     }
